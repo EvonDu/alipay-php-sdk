@@ -1,9 +1,9 @@
 <?php
 require '../vendor/autoload.php';
-use evondu\alipay\PaymentClient;
+use evondu\alipay\TradeClient;
 
 $config = include("config/test.php");
-$client = new PaymentClient($config);
+$client = new TradeClient($config);
 $client->payPage([
     "out_trade_no"  => time(),
     "total_amount"  => "0.01",

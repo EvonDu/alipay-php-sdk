@@ -37,7 +37,7 @@ class BaseClient{
 
     /**
      * 签名方法
-     * @param array $params
+     * @param $data
      * @param string $signType
      * @return string
      * @throws \Exception
@@ -88,7 +88,8 @@ class BaseClient{
 
     /**
      * 执行接口
-     * @param array $params
+     * @param $method
+     * @param RequestBuild $build
      * @return null
      */
     protected function execute($method, RequestBuild $build){

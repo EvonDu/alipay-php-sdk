@@ -10,8 +10,8 @@ class AuthClient extends BaseClient {
 
     /**
      * 进行授权
-     * @param $redirect_uri
-     * @return int
+     * @param string $scope
+     * @return int|string
      */
     protected function oauth($scope = self::SCOPE_BASE){
         if(!isset($_GET["auth_code"]))

@@ -54,7 +54,7 @@ class Http{
      */
     public function post($url,$data){
         //设置参数
-        curl_setopt($this->curl,CURLOPT_URL, $url);
+        curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_POST, TRUE);
         curl_setopt($this->curl, CURLOPT_POSTFIELDS, $data);
         //调用接口
