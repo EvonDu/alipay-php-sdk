@@ -99,4 +99,18 @@ class BaseClient{
         header("Location: $url");
         return null;
     }
+
+    /**
+     * 调用接口
+     * @param array $params
+     * @return mixed
+     */
+    protected function curl(Array $params) {
+        $params["sign"] = $this->sign($this->getSignContent($params),$this->config->getSignType());
+        $url = $this->config->getGatewayUrl() . "?" . http_build_query($params);
+        $http = new Http();
+        $result = $http->get($url);
+        $result = json_decode($result);
+        return $result;
+    }
 }

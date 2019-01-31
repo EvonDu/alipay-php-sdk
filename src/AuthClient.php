@@ -55,7 +55,7 @@ class AuthClient extends BaseClient {
         $build->setCommonParam("grant_type","authorization_code");
         $build->setCommonParam("code",$_GET["auth_code"]);
         $params = $build->getRequest("alipay.system.oauth.token");
-        $result = $this->execCurl($params);
+        $result = $this->curl($params);
         if(!isset($result->alipay_system_oauth_token_response))
             throw new \Exception("获取access_token失败");
 
@@ -86,25 +86,11 @@ class AuthClient extends BaseClient {
         $build = new RequestBuild($this->config);
         $build->setCommonParam("auth_token",$access_token);
         $params = $build->getRequest("alipay.user.info.share");
-        $result = $this->execCurl($params);
+        $result = $this->curl($params);
 
         if(isset($result->alipay_user_info_share_response))
             return $result->alipay_user_info_share_response;
         else
             return false;
-    }
-
-    /**
-     * 调用接口
-     * @param array $params
-     * @return mixed
-     */
-    protected function execCurl(Array $params) {
-        $params["sign"] = $this->sign($this->getSignContent($params),$this->config->getSignType());
-        $url = $this->config->getGatewayUrl() . "?" . http_build_query($params);
-        $http = new Http();
-        $result = $http->get($url);
-        $result = json_decode($result);
-        return $result;
     }
 }
