@@ -1,20 +1,15 @@
 <?php
 require '../vendor/autoload.php';
+require './lib/UrlHelp.php';//Demo用的URL帮助类，用于获取相对URL路径设置Notify，实际使用时不用使用
 use evondu\alipay\TradeClient;
 
 $config = include("config/test.php");
 $client = new TradeClient($config);
+$notify_url = UrlHelp::to("notify.php"); //Notify的URL
 $data = $client->precreate([
     "out_trade_no"  => time(),
     "total_amount"  => "0.01",
     "subject"       => "标题",
     "body"          => "支付内容",
-],UrlTo("notify.php"));
+],$notify_url);
 var_dump($data);
-
-//Url函数
-function UrlTo($path){
-    return $_SERVER["SERVER_PORT"] == "80" ?
-        dirname($_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'])."/$path" :
-        dirname($_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"])."/$path";
-}
