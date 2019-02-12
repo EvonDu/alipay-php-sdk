@@ -1,23 +1,17 @@
 <?php
-namespace evondu\alipay;
+namespace evondu\alipay\module;
 
-use evondu\alipay\lib\Parameter;
+use evondu\alipay\core\BaseModule;
 use evondu\alipay\core\Request;
+use evondu\alipay\lib\Parameter;
 
-/**
- * @property AlipayClient $app
- */
-class TradeClient{
-    private $app;
-
-    public function __construct(&$app)
-    {
-        $this->app = $app;
-    }
-
+class Trade extends BaseModule {
     /**
      * 页面支付
-     * @return mixed
+     * @param array $params
+     * @param string $notify_url
+     * @param string $return_url
+     * @return null
      */
     public function payPage(Array $params=[], $notify_url="", $return_url=""){
         //参数判断
@@ -33,12 +27,18 @@ class TradeClient{
         $build->setCommonParam("return_url", $return_url);
         $build->setBizContent("product_code", "FAST_INSTANT_TRADE_PAY");
         $build->setBizContents($params);
-        $this->execute("alipay.trade.page.pay", $build);
+        $this->app->execute->redirect("alipay.trade.page.pay", $build);
+
+        //返回
+        return null;
     }
 
     /**
      * 手机支付
-     * @return mixed
+     * @param array $params
+     * @param string $notify_url
+     * @param string $return_url
+     * @return null
      */
     public function payWap(Array $params=[], $notify_url="", $return_url=""){
         //参数判断
@@ -49,18 +49,22 @@ class TradeClient{
         ]);
 
         //执行调用
-        $build = new Request($this->config);
+        $build = new Request($this->app->config);
         $build->setCommonParam("notify_url", $notify_url);
         $build->setCommonParam("return_url", $return_url);
         $build->setBizContent("product_code", "FAST_INSTANT_TRADE_PAY");
         $build->setBizContents($params);
-        $this->execute("alipay.trade.wap.pay", $build);
+        $this->app->execute->redirect("alipay.trade.wap.pay", $build);
+
+        //返回
+        return null;
     }
 
     /**
      * 线下交易预创建(二维码支付)
      * @param array $params
      * @param string $notify_url
+     * @return null
      */
     public function precreate(Array $params=[], $notify_url=""){
         //参数判断
@@ -74,13 +78,16 @@ class TradeClient{
         $build = new Request($this->app->config);
         $build->setCommonParam("notify_url", $notify_url);
         $build->setBizContents($params);
-        var_dump($build->getRequest());
-        //$this->execute("alipay.trade.precreate", $build);
+        $this->app->execute->redirect("alipay.trade.precreate", $build);
+
+        //返回
+        return null;
     }
 
     /**
      * 订单查询
      * @param array $params
+     * @return null
      */
     public function query(Array $params=[]){
         //参数判断
@@ -89,8 +96,14 @@ class TradeClient{
         ]);
 
         //执行调用
-        $build = new Request($this->config);
+        $build = new Request($this->app->config);
         $build->setBizContents($params);
-        $this->execute("alipay.trade.query", $build);
+        $data = $this->app->execute->get("alipay.trade.query", $build);
+
+        //判断并返回
+        if(isset($data->alipay_trade_query_response))
+            return $data->alipay_trade_query_response;
+        else
+            return null;
     }
 }

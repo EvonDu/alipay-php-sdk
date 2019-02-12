@@ -1,10 +1,10 @@
 <?php
-namespace evondu\alipay;
+namespace evondu\alipay\core;
 
 /**
- * @property Config $config
+ * @property \evondu\alipay\core\Config $config
  */
-class RequestBuild{
+class Request{
     /**
      * @var Config
      */

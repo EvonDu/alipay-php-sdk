@@ -1,5 +1,5 @@
 <?php
-namespace evondu\alipay;
+namespace evondu\alipay\core;
 
 class Config{
     /**

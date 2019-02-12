@@ -1,9 +1,11 @@
 <?php
 require '../vendor/autoload.php';
-use evondu\alipay\TradeClient;
+
+use evondu\alipay\AlipayClient;
 
 $config = include("config/test.php");
-$client = new TradeClient($config);
-$client->query([
+$client = new AlipayClient($config);
+$data = $client->trade->query([
     "out_trade_no"  => "1234567",
 ]);
+var_dump($data);

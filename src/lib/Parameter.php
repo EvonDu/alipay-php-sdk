@@ -1,7 +1,7 @@
 <?php
-namespace evondu\alipay;
+namespace evondu\alipay\lib;
 
-class RequestParams{
+class Parameter{
     static function checkRequire($params, Array $names = []){
         $keys = array_keys($params);
         foreach ($names as $item){

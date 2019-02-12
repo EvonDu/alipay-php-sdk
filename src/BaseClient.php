@@ -89,10 +89,10 @@ class BaseClient{
     /**
      * 执行接口
      * @param $method
-     * @param RequestBuild $build
+     * @param Request $build
      * @return null
      */
-    protected function execute($method, RequestBuild $build){
+    protected function execute($method, Request $build){
         $params = $build->getRequest($method);
         $params["sign"] = $this->sign($this->getSignContent($params),$this->config->getSignType());
         $url = $this->config->getGatewayUrl() . "?" . http_build_query($params);

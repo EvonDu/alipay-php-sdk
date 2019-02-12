@@ -1,7 +1,10 @@
 <?php
-namespace evondu\alipay;
+namespace evondu\alipay\module;
 
-class AuthClient extends BaseClient {
+use evondu\alipay\core\BaseModule;
+use evondu\alipay\core\Request;
+
+class Auth extends BaseModule {
     /**
      * 常量
      */
@@ -27,7 +30,7 @@ class AuthClient extends BaseClient {
      * @return string
      */
     protected function toAuth($redirect_uri, $scope = self::SCOPE_BASE){
-        $url = "https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=".$this->config->getAppId()."&scope=$scope&redirect_uri=$redirect_uri";
+        $url = "https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=".$this->app->config->getAppId()."&scope=$scope&redirect_uri=$redirect_uri";
         header("Location: $url");
         die;
     }
@@ -51,15 +54,29 @@ class AuthClient extends BaseClient {
         if(!isset($_GET["auth_code"]))
             throw new \Exception("请先进行授权，获取auth_code");
 
-        $build = new Request($this->config);
+        $build = new Request($this->app->config);
         $build->setCommonParam("grant_type","authorization_code");
         $build->setCommonParam("code",$_GET["auth_code"]);
-        $params = $build->getRequest("alipay.system.oauth.token");
-        $result = $this->curl($params);
-        if(!isset($result->alipay_system_oauth_token_response))
+        $data = $this->app->execute->get("alipay.system.oauth.token",$build);
+        if(!isset($data->alipay_system_oauth_token_response))
             throw new \Exception("获取access_token失败");
 
-        return $result->alipay_system_oauth_token_response;
+        return $data->alipay_system_oauth_token_response;
+    }
+
+    /**
+     * 获取用户信息
+     */
+    public function getUserInfo(){
+        $access_token = $this->getAccessToken(self::SCOPE_USER);
+        $build = new Request($this->app->config);
+        $build->setCommonParam("auth_token",$access_token);
+        $result = $this->app->execute->get("alipay.user.info.share", $build);
+
+        if(isset($result->alipay_user_info_share_response))
+            return $result->alipay_user_info_share_response;
+        else
+            return false;
     }
 
     /**
@@ -76,21 +93,5 @@ class AuthClient extends BaseClient {
      */
     public function getUserId($scope = self::SCOPE_BASE){
         return $this->oauth($scope)->user_id;
-    }
-
-    /**
-     * 获取用户信息
-     */
-    public function getUserInfo(){
-        $access_token = $this->getAccessToken(self::SCOPE_USER);
-        $build = new Request($this->config);
-        $build->setCommonParam("auth_token",$access_token);
-        $params = $build->getRequest("alipay.user.info.share");
-        $result = $this->curl($params);
-
-        if(isset($result->alipay_user_info_share_response))
-            return $result->alipay_user_info_share_response;
-        else
-            return false;
     }
 }
