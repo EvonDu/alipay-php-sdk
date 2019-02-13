@@ -106,4 +106,28 @@ class Trade extends BaseModule {
         else
             return null;
     }
+
+    /**
+     * 订单退款
+     * @param array $params
+     * @return null
+     */
+    public function refund(Array $params=[]){
+        //参数判断
+        Parameter::checkRequire($params ,[
+            ['out_trade_no', 'trade_no '],
+            "refund_amount",
+        ]);
+
+        //执行调用
+        $build = new Request($this->app->config);
+        $build->setBizContents($params);
+        $data = $this->app->execute->get("alipay.trade.refund", $build);
+
+        //判断并返回
+        if(isset($data->alipay_trade_refund_response))
+            return $data->alipay_trade_refund_response;
+        else
+            return null;
+    }
 }
