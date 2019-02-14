@@ -92,7 +92,7 @@ class Trade extends BaseModule {
     public function query(Array $params=[]){
         //参数判断
         Parameter::checkRequire($params ,[
-            ['out_trade_no', 'trade_no ']
+            ['out_trade_no', 'trade_no']
         ]);
 
         //执行调用
@@ -115,7 +115,7 @@ class Trade extends BaseModule {
     public function refund(Array $params=[]){
         //参数判断
         Parameter::checkRequire($params ,[
-            ['out_trade_no', 'trade_no '],
+            ['out_trade_no', 'trade_no'],
             "refund_amount",
         ]);
 
@@ -127,6 +127,30 @@ class Trade extends BaseModule {
         //判断并返回
         if(isset($data->alipay_trade_refund_response))
             return $data->alipay_trade_refund_response;
+        else
+            return null;
+    }
+
+    /**
+     * 退款查询
+     * @param array $params
+     * @return mixed
+     */
+    public function refundQuery(Array $params=[]){
+        //参数判断
+        Parameter::checkRequire($params ,[
+            ['out_trade_no', 'trade_no'],
+            ['out_request_no']
+        ]);
+
+        //执行调用
+        $build = new Request($this->app->config);
+        $build->setBizContents($params);
+        $data = $this->app->execute->get("alipay.trade.fastpay.refund.query", $build);
+
+        //判断并返回
+        if(isset($data->alipay_trade_fastpay_refund_query_response))
+            return $data->alipay_trade_fastpay_refund_query_response;
         else
             return null;
     }
