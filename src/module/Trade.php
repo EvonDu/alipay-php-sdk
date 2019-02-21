@@ -7,7 +7,7 @@ use evondu\alipay\lib\Parameter;
 
 class Trade extends BaseModule {
     /**
-     * 页面支付
+     * alipay.trade.page.pay(统一收单下单并支付页面接口)
      * @param array $params
      * @param string $notify_url
      * @param string $return_url
@@ -34,7 +34,7 @@ class Trade extends BaseModule {
     }
 
     /**
-     * 手机支付
+     * alipay.trade.wap.pay(手机网站支付接口2.0)
      * @param array $params
      * @param string $notify_url
      * @param string $return_url
@@ -61,7 +61,7 @@ class Trade extends BaseModule {
     }
 
     /**
-     * 线下交易预创建(二维码支付)
+     * alipay.trade.precreate(统一收单线下交易预创建)(二维码支付)
      * @param array $params
      * @param string $notify_url
      * @return null
@@ -85,7 +85,7 @@ class Trade extends BaseModule {
     }
 
     /**
-     * 订单查询
+     * alipay.trade.query(统一收单线下交易查询)
      * @param array $params
      * @return null
      */
@@ -108,7 +108,7 @@ class Trade extends BaseModule {
     }
 
     /**
-     * 订单退款
+     * alipay.trade.refund(统一收单交易退款接口)
      * @param array $params
      * @return null
      */
@@ -132,7 +132,7 @@ class Trade extends BaseModule {
     }
 
     /**
-     * 退款查询
+     * alipay.trade.fastpay.refund.query(统一收单交易退款查询)
      * @param array $params
      * @return mixed
      */
@@ -156,7 +156,7 @@ class Trade extends BaseModule {
     }
 
     /**
-     * 退款查询
+     * alipay.trade.close(统一收单交易关闭接口)
      * @param array $params
      * @return mixed
      */
@@ -174,6 +174,29 @@ class Trade extends BaseModule {
         //判断并返回
         if(isset($data->alipay_trade_close_response))
             return $data->alipay_trade_close_response;
+        else
+            return null;
+    }
+
+    /**
+     * alipay.trade.cancel(统一收单交易撤销接口)
+     * @param array $params
+     * @return null
+     */
+    public function cancel(Array $params=[]){
+        //参数判断
+        Parameter::checkRequire($params ,[
+            ['out_trade_no', 'trade_no']
+        ]);
+
+        //执行调用
+        $build = new Request($this->app->config);
+        $build->setBizContents($params);
+        $data = $this->app->execute->get("alipay.trade.cancel", $build);
+
+        //判断并返回
+        if(isset($data->alipay_trade_cancel_response))
+            return $data->alipay_trade_cancel_response;
         else
             return null;
     }
