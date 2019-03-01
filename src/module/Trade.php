@@ -61,6 +61,33 @@ class Trade extends BaseModule {
     }
 
     /**
+     * alipay.trade.app.pay(app支付接口2.0)
+     * @param array $params
+     * @param string $notify_url
+     * @param string $return_url
+     * @return null
+     */
+    public function payApp(Array $params=[], $notify_url="", $return_url=""){
+        //参数判断
+        Parameter::checkRequire($params ,[
+            'out_trade_no',
+            'total_amount',
+            'subject',
+        ]);
+
+        //执行调用
+        $build = new Request($this->app->config);
+        $build->setCommonParam("notify_url", $notify_url);
+        $build->setCommonParam("return_url", $return_url);
+        $build->setBizContent("product_code", "QUICK_MSECURITY_PAY");
+        $build->setBizContents($params);
+        $this->app->execute->redirect("alipay.trade.app.pay", $build);
+
+        //返回
+        return null;
+    }
+
+    /**
      * alipay.trade.precreate(统一收单线下交易预创建)(二维码支付)
      * @param array $params
      * @param string $notify_url
@@ -103,6 +130,52 @@ class Trade extends BaseModule {
         //判断并返回
         if(isset($data->alipay_trade_query_response))
             return $data->alipay_trade_query_response;
+        else
+            return null;
+    }
+
+    /**
+     * alipay.trade.close(统一收单交易关闭接口)
+     * @param array $params
+     * @return mixed
+     */
+    public function close(Array $params=[]){
+        //参数判断
+        Parameter::checkRequire($params ,[
+            ['out_trade_no', 'trade_no']
+        ]);
+
+        //执行调用
+        $build = new Request($this->app->config);
+        $build->setBizContents($params);
+        $data = $this->app->execute->get("alipay.trade.close", $build);
+
+        //判断并返回
+        if(isset($data->alipay_trade_close_response))
+            return $data->alipay_trade_close_response;
+        else
+            return null;
+    }
+
+    /**
+     * alipay.trade.cancel(统一收单交易撤销接口)
+     * @param array $params
+     * @return null
+     */
+    public function cancel(Array $params=[]){
+        //参数判断
+        Parameter::checkRequire($params ,[
+            ['out_trade_no', 'trade_no']
+        ]);
+
+        //执行调用
+        $build = new Request($this->app->config);
+        $build->setBizContents($params);
+        $data = $this->app->execute->get("alipay.trade.cancel", $build);
+
+        //判断并返回
+        if(isset($data->alipay_trade_cancel_response))
+            return $data->alipay_trade_cancel_response;
         else
             return null;
     }
@@ -151,52 +224,6 @@ class Trade extends BaseModule {
         //判断并返回
         if(isset($data->alipay_trade_fastpay_refund_query_response))
             return $data->alipay_trade_fastpay_refund_query_response;
-        else
-            return null;
-    }
-
-    /**
-     * alipay.trade.close(统一收单交易关闭接口)
-     * @param array $params
-     * @return mixed
-     */
-    public function close(Array $params=[]){
-        //参数判断
-        Parameter::checkRequire($params ,[
-            ['out_trade_no', 'trade_no']
-        ]);
-
-        //执行调用
-        $build = new Request($this->app->config);
-        $build->setBizContents($params);
-        $data = $this->app->execute->get("alipay.trade.close", $build);
-
-        //判断并返回
-        if(isset($data->alipay_trade_close_response))
-            return $data->alipay_trade_close_response;
-        else
-            return null;
-    }
-
-    /**
-     * alipay.trade.cancel(统一收单交易撤销接口)
-     * @param array $params
-     * @return null
-     */
-    public function cancel(Array $params=[]){
-        //参数判断
-        Parameter::checkRequire($params ,[
-            ['out_trade_no', 'trade_no']
-        ]);
-
-        //执行调用
-        $build = new Request($this->app->config);
-        $build->setBizContents($params);
-        $data = $this->app->execute->get("alipay.trade.cancel", $build);
-
-        //判断并返回
-        if(isset($data->alipay_trade_cancel_response))
-            return $data->alipay_trade_cancel_response;
         else
             return null;
     }
