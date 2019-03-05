@@ -227,4 +227,29 @@ class Trade extends BaseModule {
         else
             return null;
     }
+
+    /**
+     * alipay.trade.order.settle(统一收单交易结算接口)
+     * @param array $params
+     * @return mixed
+     */
+    public function orderSettle(Array $params=[]){
+        //参数判断
+        Parameter::checkRequire($params ,[
+            'out_trade_no',
+            'trade_no',
+            'royalty_parameters'
+        ]);
+
+        //执行调用
+        $build = new Request($this->app->config);
+        $build->setBizContents($params);
+        $data = $this->app->execute->get("alipay.trade.order.settle", $build);
+
+        //判断并返回
+        if(isset($data->alipay_trade_order_settle_response))
+            return $data->alipay_trade_order_settle_response;
+        else
+            return null;
+    }
 }
