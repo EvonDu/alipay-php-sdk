@@ -14,3 +14,5 @@ $data = $client->trade->precreate([
     "body"          => "支付内容",
 ],$notify_url);
 var_dump($data);
+?>
+<img src="http://qr.liantu.com/api.php?text=<?=$data->qr_code?>"/>

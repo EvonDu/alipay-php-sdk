@@ -105,10 +105,13 @@ class Trade extends BaseModule {
         $build = new Request($this->app->config);
         $build->setCommonParam("notify_url", $notify_url);
         $build->setBizContents($params);
-        $this->app->execute->redirect("alipay.trade.precreate", $build);
+        $data = $this->app->execute->get("alipay.trade.precreate", $build);
 
         //返回
-        return null;
+        if(isset($data->alipay_trade_precreate_response))
+            return $data->alipay_trade_precreate_response;
+        else
+            return null;
     }
 
     /**
