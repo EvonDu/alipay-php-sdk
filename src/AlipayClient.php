@@ -16,10 +16,16 @@ use evondu\alipay\module\Trade;
  */
 class AlipayClient{
     /**
-     * 属性
+     * @var Config $config
+     * @var Sign $sign
+     * @var Execute $execute
+     * @var Auth $auth
+     * @var Trade $trade
      */
     public $config;
+    public $sign;
     public $execute;
+    public $auth;
     public $trade;
 
     /**
