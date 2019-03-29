@@ -3,6 +3,7 @@ namespace evondu\alipay\module;
 
 use evondu\alipay\core\BaseModule;
 use evondu\alipay\core\Request;
+use evondu\alipay\lib\Url;
 
 class Auth extends BaseModule {
     /**
@@ -26,7 +27,7 @@ class Auth extends BaseModule {
      */
     public function oauth($scope = self::SCOPE_BASE){
         if(!isset($_GET["auth_code"]))
-            return $this->toAuth($this->getCurrentUrl(), $scope);
+            return $this->toAuth(Url::current(), $scope);
         else{
             $response = $this->requestAccessToken($_GET["auth_code"]);
             $this->user_id = $response->user_id;
@@ -106,15 +107,5 @@ class Auth extends BaseModule {
         $url = $this->getAuthUrl($redirect_uri, $scope);
         header("Location: $url");
         die;
-    }
-
-    /**
-     * 获取当前URL
-     * @return string
-     */
-    protected function getCurrentUrl(){
-        return $_SERVER["SERVER_PORT"] == "80" ?
-            $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] :
-            $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].':'.$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
     }
 }
