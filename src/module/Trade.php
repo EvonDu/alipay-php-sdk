@@ -27,10 +27,10 @@ class Trade extends BaseModule {
         $build->setCommonParam("return_url", $return_url);
         $build->setBizContent("product_code", "FAST_INSTANT_TRADE_PAY");
         $build->setBizContents($params);
-        $this->app->execute->redirect("alipay.trade.page.pay", $build);
+        $url = $this->app->execute->url("alipay.trade.page.pay", $build);
 
         //返回
-        return null;
+        return $url;
     }
 
     /**
@@ -54,10 +54,10 @@ class Trade extends BaseModule {
         $build->setCommonParam("return_url", $return_url);
         $build->setBizContent("product_code", "FAST_INSTANT_TRADE_PAY");
         $build->setBizContents($params);
-        $this->app->execute->redirect("alipay.trade.wap.pay", $build);
+        $url = $this->app->execute->url("alipay.trade.wap.pay", $build);
 
         //返回
-        return null;
+        return $url;
     }
 
     /**
@@ -81,10 +81,10 @@ class Trade extends BaseModule {
         $build->setCommonParam("return_url", $return_url);
         $build->setBizContent("product_code", "QUICK_MSECURITY_PAY");
         $build->setBizContents($params);
-        $this->app->execute->redirect("alipay.trade.app.pay", $build);
+        $url = $this->app->execute->url("alipay.trade.app.pay", $build);
 
         //返回
-        return null;
+        return $url;
     }
 
     /**

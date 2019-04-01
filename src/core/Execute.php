@@ -30,4 +30,11 @@ class Execute{
         $data = json_decode($result);
         return $data;
     }
+
+    public function url($method, Request $build, $isSign=true){
+        $params = $build->getRequest($method);
+        if($isSign) $params["sign"] = $this->sign->getSignStr($params);
+        $url = $this->config->getGatewayUrl() . "?" . http_build_query($params);
+        return $url;
+    }
 }
