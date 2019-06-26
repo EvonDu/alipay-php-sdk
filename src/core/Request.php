@@ -67,6 +67,7 @@ class Request{
      * @return string
      */
     public function getBizContentString(){
+        ksort($this->biz_content);
         return json_encode($this->biz_content,JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 

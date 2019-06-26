@@ -5,6 +5,11 @@ use evondu\alipay\core\BaseModule;
 use evondu\alipay\core\Request;
 use evondu\alipay\lib\Parameter;
 
+/**
+ * 支付宝支付模块
+ * Class Trade
+ * @package evondu\alipay\module
+ */
 class Trade extends BaseModule {
     /**
      * alipay.trade.page.pay(统一收单下单并支付页面接口)

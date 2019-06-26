@@ -5,6 +5,11 @@ use evondu\alipay\core\BaseModule;
 use evondu\alipay\core\Request;
 use evondu\alipay\lib\Url;
 
+/**
+ * 支付宝用户授权模块
+ * Class Auth
+ * @package evondu\alipay\module
+ */
 class Auth extends BaseModule {
     /**
      * @const string SCOPE_BASE
