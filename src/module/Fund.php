@@ -39,17 +39,20 @@ class Fund extends BaseModule {
         Parameter::checkRequire($params ,[
             'auth_no',
             'out_request_no',
-            'order_title',
             'remark',
+            'amount',
         ]);
 
         //执行调用
         $build = new Request($this->app->config);
         $build->setBizContents($params);
-        $url = $this->app->execute->get("alipay.fund.auth.order.unfreeze", $build);
+        $result = $this->app->execute->get("alipay.fund.auth.order.unfreeze", $build);
 
-        //返回
-        return $url;
+        //返回结果
+        if(isset($result->alipay_fund_auth_order_unfreeze_response))
+            return $result->alipay_fund_auth_order_unfreeze_response;
+        else
+            return null;
     }
 
     //alipay.trade.pay(授权转支付)
@@ -74,6 +77,50 @@ class Fund extends BaseModule {
         $result = $this->app->execute->get("alipay.trade.pay", $build);
 
         //返回结果
-        return $result;
+        if(isset($result->alipay_trade_pay_response))
+            return $result->alipay_trade_pay_response;
+        else
+            return null;
+    }
+
+    //alipay.fund.auth.operation.detail.query(资金授权操作查询)
+    public function operation(Array $params=[]){
+        //参数判断
+        Parameter::checkRequire($params ,[
+            ['auth_no', 'out_request_no'],
+            ['operation_id', 'out_request_no ']
+        ]);
+
+        //执行调用
+        $build = new Request($this->app->config);
+        $build->setBizContents($params);
+        $result = $this->app->execute->get("alipay.fund.auth.operation.detail.query", $build);
+
+        //返回结果
+        if(isset($result->alipay_fund_auth_operation_detail_query_response))
+            return $result->alipay_fund_auth_operation_detail_query_response;
+        else
+            return null;
+    }
+
+    //alipay.fund.auth.operation.cancel(资金授权撤销接口)
+    public function cancel(Array $params=[]){
+        //参数判断
+        Parameter::checkRequire($params ,[
+            ['auth_no', 'out_request_no'],
+            ['operation_id', 'out_request_no '],
+            'remark',
+        ]);
+
+        //执行调用
+        $build = new Request($this->app->config);
+        $build->setBizContents($params);
+        $result = $this->app->execute->get("alipay.fund.auth.operation.cancel", $build);
+
+        //返回结果
+        if(isset($result->alipay_fund_auth_operation_cancel_response))
+            return $result->alipay_fund_auth_operation_cancel_response;
+        else
+            return null;
     }
 }
