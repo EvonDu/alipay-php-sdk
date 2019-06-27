@@ -7,8 +7,8 @@ use evondu\alipay\lib\Url;
 $config = include("../config/qiyi.php");
 $client = new AlipayClient($config);
 $time = time();
-$notify_url = Url::to("../notify.php");
-$str = $client->fundAuth->freeze([
+$notify_url = Url::to("notify.php");
+$str = $client->fund->freeze([
     "out_order_no"      => $time,
     "out_request_no"    => $time,
     "order_title"       => "可口可乐",

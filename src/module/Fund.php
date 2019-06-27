@@ -7,10 +7,10 @@ use evondu\alipay\lib\Parameter;
 
 /**
  * 支付宝资金(预授权模块)
- * Class FundAuth
+ * Class Fund
  * @package evondu\alipay\module
  */
-class FundAuth extends BaseModule {
+class Fund extends BaseModule {
     //alipay.fund.auth.order.app.freeze(线上资金授权冻结接口)
     public function freeze(Array $params=[], $notify_url=""){
         //参数判断
@@ -26,9 +26,27 @@ class FundAuth extends BaseModule {
         //执行调用
         $build = new Request($this->app->config);
         $build->setCommonParam("notify_url", $notify_url);
-        $build->setBizContent("product_code", "FAST_INSTANT_TRADE_PAY");
         $build->setBizContents($params);
         $url = $this->app->execute->sdkExecute("alipay.fund.auth.order.app.freeze", $build);
+
+        //返回
+        return $url;
+    }
+
+    //alipay.fund.auth.order.unfreeze(资金授权解冻)
+    public function unfreeze(Array $params=[]){
+        //参数判断
+        Parameter::checkRequire($params ,[
+            'auth_no',
+            'out_request_no',
+            'order_title',
+            'remark',
+        ]);
+
+        //执行调用
+        $build = new Request($this->app->config);
+        $build->setBizContents($params);
+        $url = $this->app->execute->get("alipay.fund.auth.order.unfreeze", $build);
 
         //返回
         return $url;
