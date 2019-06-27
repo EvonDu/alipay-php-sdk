@@ -10,7 +10,7 @@ class Parameter{
                     throw new \Exception("missing parameter : [ ".implode(" | ", $item)." ]");
             }
             else{
-                if(!in_array($item, $keys) === null)
+                if(in_array($item, $keys) === false)
                     throw new \Exception("missing parameter : $item");
             }
         }

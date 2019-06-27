@@ -51,4 +51,29 @@ class Fund extends BaseModule {
         //返回
         return $url;
     }
+
+    //alipay.trade.pay(授权转支付)
+    public function pay(Array $params=[], $return_url){
+        //参数判断
+        Parameter::checkRequire($params ,[
+            'auth_no',                  //授权号
+            'out_trade_no',             //商户订单号
+            'body',                     //支付说明
+            'subject',                  //剩余资金解冻说明
+            'buyer_id',                 //买家用户ID(通过预授权冻结接口返回的payer_user_id字段获取)
+            'seller_id',                //卖家用户ID(通过预授权冻结接口返回的payee_user_id字段获取)
+            'total_amount',             //总支付金额
+        ]);
+
+        //执行调用
+        $build = new Request($this->app->config);
+        $build->setCommonParam("return_url", $return_url);
+        $build->setBizContent("product_code", "PRE_AUTH_ONLINE");
+        $build->setBizContent("auth_confirm_mode", "COMPLETE");
+        $build->setBizContents($params);
+        $result = $this->app->execute->get("alipay.trade.pay", $build);
+
+        //返回结果
+        return $result;
+    }
 }

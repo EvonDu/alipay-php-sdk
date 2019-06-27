@@ -1,0 +1,5 @@
+# upload files
+/*.log
+
+# gitignore file
+!.gitignore

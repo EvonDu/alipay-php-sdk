@@ -18,7 +18,7 @@ $str = $client->fund->freeze([
 ],$notify_url);
 
 //echo $str;
-print_r($str);
+//print_r($str);
 ?>
 <!DOCTYPE html>
 <html lang="en">
