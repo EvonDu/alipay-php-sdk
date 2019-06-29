@@ -13,7 +13,6 @@ $str = $client->fund->freeze([
     "out_request_no"    => $time,
     "order_title"       => "可口可乐",
     "amount"            => 0.01,
-    "product_code"      => "PRE_AUTH_ONLINE",
     "payee_logon_id"    => "chen@people71.com"
 ],$notify_url);
 

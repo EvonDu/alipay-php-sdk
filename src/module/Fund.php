@@ -19,12 +19,12 @@ class Fund extends BaseModule {
             'out_request_no',
             'order_title',
             'amount',
-            'product_code',
             ["payee_user_id","payee_logon_id"],
         ]);
 
         //执行调用
         $build = new Request($this->app->config);
+        $build->setBizContent("product_code", "PRE_AUTH_ONLINE");
         $build->setCommonParam("notify_url", $notify_url);
         $build->setBizContents($params);
         $url = $this->app->execute->sdkExecute("alipay.fund.auth.order.app.freeze", $build);
