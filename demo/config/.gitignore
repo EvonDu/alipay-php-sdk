@@ -1,5 +1,8 @@
-# upload files
-/*
-
 # gitignore file
 !.gitignore
+
+# example file
+!example.php
+
+# config
+/*

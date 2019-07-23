@@ -4,7 +4,7 @@ require '../../vendor/autoload.php';
 use evondu\alipay\AlipayClient;
 use evondu\alipay\lib\Url;
 
-$config = include("../config/qiyi.php");
+$config = include("../config/demo.php");
 $client = new AlipayClient($config);
 $time = time();
 $notify_url = Url::to("notify.php");

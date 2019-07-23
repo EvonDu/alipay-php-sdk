@@ -4,7 +4,7 @@ require '../vendor/autoload.php';
 use evondu\alipay\AlipayClient;
 use evondu\alipay\lib\Url;
 
-$config = include("config/test.php");
+$config = include("config/demo.php");
 $client = new AlipayClient($config);
 $notify_url = Url::to("notify.php"); //Notify的URL
 $return_url = Url::to("return.php"); //Return的URL
