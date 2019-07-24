@@ -7,6 +7,7 @@ use evondu\alipay\core\Sign;
 use evondu\alipay\module\Auth;
 use evondu\alipay\module\Trade;
 use evondu\alipay\module\Fund;
+use evondu\alipay\module\Face;
 
 /**
  * @property \evondu\alipay\core\Config $config
@@ -15,6 +16,7 @@ use evondu\alipay\module\Fund;
  * @property \evondu\alipay\module\Auth $auth
  * @property \evondu\alipay\module\Trade $trade
  * @property \evondu\alipay\module\Fund $fund
+ * @property \evondu\alipay\module\Face $face
  */
 class AlipayClient{
     /**
@@ -24,6 +26,7 @@ class AlipayClient{
      * @var Auth $auth
      * @var Trade $trade
      * @var Fund $fund
+     * @var Face $face
      */
     public $config;
     public $sign;
@@ -31,6 +34,7 @@ class AlipayClient{
     public $auth;
     public $trade;
     public $fund;
+    public $face;
 
     /**
      * 构造函数
@@ -47,5 +51,6 @@ class AlipayClient{
         $this->auth = new Auth($this);
         $this->trade = new Trade($this);
         $this->fund = new Fund($this);
+        $this->face = new Face($this);
     }
 }
