@@ -108,7 +108,7 @@ class Fund extends BaseModule {
         //参数判断
         Parameter::checkRequire($params ,[
             ['auth_no', 'out_request_no'],
-            ['operation_id', 'out_request_no '],
+            ['operation_id', 'out_request_no'],
             'remark',
         ]);
 
@@ -122,5 +122,24 @@ class Fund extends BaseModule {
             return $result->alipay_fund_auth_operation_cancel_response;
         else
             return null;
+    }
+
+    //alipay.fund.trans.uni.transfer(统一转账接口)(未完成)
+    public function transUniTransfer(Array $params=[]){
+        //参数判断
+        Parameter::checkRequire($params ,[
+            'out_biz_no',
+            'trans_amount',
+            'product_code',
+            'payee_info',
+        ]);
+
+        //执行调用
+        $build = new Request($this->app->config);
+        $build->setBizContents($params);
+        $result = $this->app->execute->get("alipay.fund.trans.uni.transfer", $build);
+
+        //返回结果
+        return $result;
     }
 }
